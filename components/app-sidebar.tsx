@@ -35,8 +35,8 @@ import {
 
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
+    name: "CafeGenie",
+    email: "cg@example.com",
     avatar: "/avatars/shadcn.jpg",
   },
   navMain: [
@@ -163,7 +163,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               <a href="#">
                 <IconInnerShadowTop className="!size-5" />
                 <span className="text-base font-semibold">
-                  Orcish Dashboard
+                  CafeGenie
                 </span>
               </a>
             </SidebarMenuButton>

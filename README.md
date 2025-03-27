@@ -1,10 +1,8 @@
-# Orcish Dashboard
-
-![orcish-dashboard](https://github.com/user-attachments/assets/cb458deb-9ba3-435e-a39c-7f48095c85c8)
+# CafeGenie
 
 ## Overview
 
-The Orcish Dashboard is a sleek and modern dashboard built with Shadcn. It features a responsive design with support for both light and dark modes, along with a customizable theme selector that lets you easily switch between different color schemes.
+The CafeGenie is a sleek and modern dashboard built with CafeGenie. It features a responsive design with support for both light and dark modes, along with a customizable theme selector that lets you easily switch between different color schemes.
 
 ## Getting Started
 
@@ -12,22 +10,5 @@ The Orcish Dashboard is a sleek and modern dashboard built with Shadcn. It featu
 
 To begin, install the required dependencies using the following command:
 
-```bash
+```bash 
 pnpm i
-```
-
-# Development Server
-
-After installing the dependencies run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
