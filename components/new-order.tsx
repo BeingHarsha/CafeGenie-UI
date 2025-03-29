@@ -17,27 +17,44 @@ interface Pizza {
     price: number;
 }
 
-const NewOrder = () => {
-// Get the active theme
-    const [customerName, setCustomerName] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
-    const [orderNumber, setOrderNumber] = useState("");
-    const [pizzaSelect, setPizzaSelect] = useState("");
-    const [totalPrice, setTotalPrice] = useState(0);
+const pizzaOptions: Pizza[] = [
+    { name: "Margherita", price: 10 },
+    { name: "Pepperoni", price: 12 },
+    { name: "Veggie", price: 11 },
+    { name: "BBQ Chicken", price: 13 },
+];
+
+const NewOrder: React.FC = () => {
+    const [customerName, setCustomerName] = useState<string>("");
+    const [phoneNumber, setPhoneNumber] = useState<string>("");
+    const [orderNumber, setOrderNumber] = useState<string>("");
+    const [pizzaInput, setPizzaInput] = useState<string>(""); // Input value for typing
+    const [totalPrice, setTotalPrice] = useState<number>(0);
     const [pizzaList, setPizzaList] = useState<Pizza[]>([]);
+    const [filteredPizzas, setFilteredPizzas] = useState<Pizza[]>(pizzaOptions); // Filtered options
+    const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false); // Dropdown visibility
 
     useEffect(() => {
         setOrderNumber("ORD-" + Math.floor(Math.random() * 100000));
     }, []);
 
-    const handlePizzaSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const selectedOption = event.target.options[event.target.selectedIndex];
-        const pizzaName = selectedOption.value;
-        const pizzaPrice = parseFloat(selectedOption.getAttribute("data-price") || "0");
+    const handlePizzaInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const inputValue = e.target.value;
+        setPizzaInput(inputValue);
 
-        setPizzaSelect(pizzaName);
-        setPizzaList([...pizzaList, { name: pizzaName, price: pizzaPrice }]);
-        setTotalPrice(totalPrice + pizzaPrice);
+        // Filter pizzas based on input
+        const filtered = pizzaOptions.filter((pizza) =>
+            pizza.name.toLowerCase().includes(inputValue.toLowerCase())
+        );
+        setFilteredPizzas(filtered);
+        setIsDropdownOpen(inputValue.length > 0 && filtered.length > 0);
+    };
+
+    const handlePizzaSelect = (pizza: Pizza) => {
+        setPizzaList([...pizzaList, pizza]);
+        setTotalPrice(totalPrice + pizza.price);
+        setPizzaInput(""); // Clear input after selection
+        setIsDropdownOpen(false); // Close dropdown
     };
 
     const handleRemovePizza = (index: number) => {
@@ -55,7 +72,7 @@ const NewOrder = () => {
         alert(`Order Submitted!\nName: ${customerName}\nPhone: ${phoneNumber}\nOrder Number: ${orderNumber}\nPizzas: ${pizzaList.map((p) => p.name).join(", ")}\nTotal Price: $${totalPrice}`);
     };
 
-    const cardGradientClass = `bg-gradient-to-t from-primary/5 to-card dark:bg-card shadow-xs`;
+    const cardGradientClass: string = `bg-gradient-to-t from-primary/5 to-card dark:bg-card shadow-xs`;
 
     return (
         <Card className={`@container/card ${cardGradientClass}`}>
@@ -69,73 +86,73 @@ const NewOrder = () => {
                     </Badge>
                 </CardAction>
             </CardHeader>
-            <div className="p-4">
-                <div className="form-group mb-4">
-                    <label htmlFor="customerName" className="block text-sm font-medium text-gray-700">Name:</label>
+            <div className="px-6 py-4">
+                <div className="form-group mb-4 flex items-center gap-4">
+                    <label htmlFor="customerName" className="w-32 text-sm font-medium text-gray-900 dark:text-gray-100">Name:</label>
                     <input
                         type="text"
                         id="customerName"
                         placeholder="Enter your name"
                         value={customerName}
-                        onChange={(e) => setCustomerName(e.target.value)}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm bg-transparent"
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCustomerName(e.target.value)}
+                        className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm bg-transparent"
                     />
                 </div>
-                <div className="form-group mb-4">
-                    <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">Phone Number:</label>
+                <div className="form-group mb-4 flex items-center gap-4">
+                    <label htmlFor="phoneNumber" className="w-32 text-sm font-medium text-gray-900 dark:text-gray-100">Phone Number:</label>
                     <input
                         type="text"
                         id="phoneNumber"
-                        placeholder="(123) 456-7890" // US phone number format placeholder
+                        placeholder="(123) 456-7890"
                         value={phoneNumber}
-                        onChange={(e) => setPhoneNumber(e.target.value)}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm bg-transparent"
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPhoneNumber(e.target.value)}
+                        className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm bg-transparent"
                     />
                 </div>
-                <div className="form-group mb-4">
-                    <label htmlFor="orderNumber" className="block text-sm font-medium text-gray-700">Order Number:</label>
+                <div className="form-group mb-4 flex items-center gap-4">
+                    <label htmlFor="orderNumber" className="w-32 text-sm font-medium text-gray-900 dark:text-gray-100">Order Number:</label>
                     <input
                         type="text"
                         id="orderNumber"
                         value={orderNumber}
                         readOnly
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm bg-transparent"
+                        className="flex-1 rounded-md border-gray-300 shadow-sm sm:text-sm bg-transparent"
                     />
                 </div>
-                <div className="form-group mb-4">
-                    <label htmlFor="pizzaSelect" className="block text-sm font-medium text-gray-700">Pizza Type:</label>
-                    <select
-                        id="pizzaSelect"
-                        value={pizzaSelect}
-                        onChange={handlePizzaSelect}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm bg-transparent"
-                        style={{ backgroundColor: 'transparent' }} // Add inline style for transparency
-                    >
-                        <option value="" disabled>
-                            Select a pizza
-                        </option>
-                        <option value="Margherita" data-price="10">
-                            Margherita - $10
-                        </option>
-                        <option value="Pepperoni" data-price="12">
-                            Pepperoni - $12
-                        </option>
-                        <option value="Veggie" data-price="11">
-                            Veggie - $11
-                        </option>
-                        <option value="BBQ Chicken" data-price="13">
-                            BBQ Chicken - $13
-                        </option>
-                    </select>
+                <div className="form-group mb-4 flex items-center gap-4 relative">
+                    <label htmlFor="pizzaInput" className="w-32 text-sm font-medium text-gray-900 dark:text-gray-100">Pizza Type:</label>
+                    <div className="flex-1 relative">
+                        <input
+                            type="text"
+                            id="pizzaInput"
+                            placeholder="Type to search pizzas"
+                            value={pizzaInput}
+                            onChange={handlePizzaInputChange}
+                            className="w-full rounded-md border-gray-300 dark:border-gray-600 bg-card dark:bg-card shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm text-gray-900 dark:text-gray-100"
+                        />
+                        {isDropdownOpen && (
+                            <ul className="absolute z-10 w-full mt-1 bg-card dark:bg-card border border-gray-300 dark:border-gray-600 rounded-md shadow-lg max-h-60 overflow-auto">
+                                {filteredPizzas.map((pizza) => (
+                                    <li
+                                        key={pizza.name}
+                                        onClick={() => handlePizzaSelect(pizza)}
+                                        className="px-4 py-2 text-sm text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                                    >
+                                        {pizza.name} - ${pizza.price}
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
                 </div>
-                <div className="form-group mb-4">
-                    <label htmlFor="totalPrice" className="block text-sm font-medium text-gray-700">Total Price:</label>
+                <div className="form-group mb-4 flex items-center gap-4">
+                    <label htmlFor="totalPrice" className="w-32 text-sm font-medium text-gray-900 dark:text-gray-100">Total Price:</label>
                     <input
                         type="text"
                         id="totalPrice"
                         value={`$${totalPrice}`}
                         readOnly
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm bg-transparent"
+                        className="flex-1 rounded-md border-gray-300 shadow-sm sm:text-sm bg-transparent"
                     />
                 </div>
                 <button
