@@ -64,16 +64,16 @@ export default function OrdersPage() {
                         <h1 className="text-center text-2xl font-semibold mb-4">Orders List</h1>
                         <div className="filter flex justify-center gap-4 mb-4">
                             <label htmlFor="statusFilter">Filter by Status:</label>
-                            <select id="statusFilter" className="status-select p-2 border rounded">
+                            <select id="statusFilter" className="status-select p-1 text-sm border rounded bg-gray-200 dark:bg-gray-700">
                                 <option value="all">All</option>
                                 <option value="preparing">Preparing</option>
                                 <option value="ready">Ready</option>
                                 <option value="cancelled">Cancelled</option>
                             </select>
                             <label htmlFor="dateRange">Filter by Date Range:</label>
-                            <input type="date" id="startDate" className="status-select p-2 border rounded" />
-                            <input type="date" id="endDate" className="status-select p-2 border rounded" />
-                            <button onClick={filterOrders} className="bg-blue-500 text-white p-2 rounded">Apply Filter</button>
+                            <input type="date" id="startDate" className="status-select p-1 text-sm border rounded bg-gray-200 dark:bg-gray-700" />
+                            <input type="date" id="endDate" className="status-select p-1 text-sm border rounded bg-gray-200 dark:bg-gray-700" />
+                            <button onClick={filterOrders} className="bg-blue-500 text-white p-1 text-sm rounded">Apply Filter</button>
                         </div>
                         <table className="orders-table w-full border-collapse">
                             <thead>
@@ -96,14 +96,14 @@ export default function OrdersPage() {
                                     <td className="p-2 border">{order.pizzas.join(", ")}</td>
                                     <td className="p-2 border">{order.totalPrice}</td>
                                     <td className="p-2 border">
-                                        <select className="status-select p-2 border rounded" onChange={(e) => updateStatus(e.target, order.orderNumber)}>
+                                        <select className="status-select p-1 text-sm border rounded bg-gray-200 dark:bg-gray-700" onChange={(e) => updateStatus(e.target, order.orderNumber)}>
                                             <option value="preparing" selected={order.status === "preparing"}>Preparing</option>
                                             <option value="ready" selected={order.status === "ready"}>Ready</option>
                                             <option value="cancelled" selected={order.status === "cancelled"}>Cancelled</option>
                                         </select>
                                     </td>
                                     <td className="p-2 border">
-                                        <button onClick={() => deleteOrder(order.orderNumber)} className="bg-red-500 text-white p-2 rounded">Delete</button>
+                                        <button onClick={() => deleteOrder(order.orderNumber)} className="bg-red-500 text-white p-1 text-sm rounded">Delete</button>
                                     </td>
                                 </tr>
                             ))}
