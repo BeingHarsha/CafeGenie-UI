@@ -75,34 +75,34 @@ export default function OrdersPage() {
                             <input type="date" id="endDate" className="status-select p-1 text-sm border rounded bg-gray-200 dark:bg-gray-700" />
                             <button onClick={filterOrders} className="bg-blue-500 text-white p-1 text-sm rounded">Apply Filter</button>
                         </div>
-                        <table className="orders-table w-full border-collapse">
+                        <table className="orders-table w-full border-collapse rounded-lg shadow-lg">
                             <thead>
                             <tr>
-                                <th className="p-2 border">Order Number</th>
-                                <th className="p-2 border">Customer Name</th>
-                                <th className="p-2 border">Phone Number</th>
-                                <th className="p-2 border">Pizza(s)</th>
-                                <th className="p-2 border">Total Price</th>
-                                <th className="p-2 border">Status</th>
-                                <th className="p-2 border">Action</th>
+                                <th className="p-2 border-b">Order Number</th>
+                                <th className="p-2 border-b">Customer Name</th>
+                                <th className="p-2 border-b">Phone Number</th>
+                                <th className="p-2 border-b">Pizza(s)</th>
+                                <th className="p-2 border-b">Total Price</th>
+                                <th className="p-2 border-b">Status</th>
+                                <th className="p-2 border-b">Action</th>
                             </tr>
                             </thead>
                             <tbody>
                             {filteredOrders.map(order => (
-                                <tr key={order.orderNumber}>
-                                    <td className="p-2 border">{order.orderNumber}</td>
-                                    <td className="p-2 border">{order.customerName}</td>
-                                    <td className="p-2 border">{order.phoneNumber}</td>
-                                    <td className="p-2 border">{order.pizzas.join(", ")}</td>
-                                    <td className="p-2 border">{order.totalPrice}</td>
-                                    <td className="p-2 border">
+                                <tr key={order.orderNumber} className="hover:bg-gray-100 dark:hover:bg-gray-800">
+                                    <td className="p-2 border-b">{order.orderNumber}</td>
+                                    <td className="p-2 border-b">{order.customerName}</td>
+                                    <td className="p-2 border-b">{order.phoneNumber}</td>
+                                    <td className="p-2 border-b">{order.pizzas.join(", ")}</td>
+                                    <td className="p-2 border-b">{order.totalPrice}</td>
+                                    <td className="p-2 border-b">
                                         <select className="status-select p-1 text-sm border rounded bg-gray-200 dark:bg-gray-700" onChange={(e) => updateStatus(e.target, order.orderNumber)}>
                                             <option value="preparing" selected={order.status === "preparing"}>Preparing</option>
                                             <option value="ready" selected={order.status === "ready"}>Ready</option>
                                             <option value="cancelled" selected={order.status === "cancelled"}>Cancelled</option>
                                         </select>
                                     </td>
-                                    <td className="p-2 border">
+                                    <td className="p-2 border-b">
                                         <button onClick={() => deleteOrder(order.orderNumber)} className="bg-red-500 text-white p-1 text-sm rounded">Delete</button>
                                     </td>
                                 </tr>

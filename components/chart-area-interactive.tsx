@@ -167,12 +167,14 @@ export function ChartAreaInteractive() {
   return (
       <Card className="@container/card">
         <CardHeader>
-          <CardTitle>Total Visitors</CardTitle>
+          <CardTitle>Sales</CardTitle>
           <CardDescription>
-          <span className="hidden @[540px]/card:block">
-            Total for the last 30 days
-          </span>
-            <span className="@[540px]/card:hidden">Last 30 days</span>
+            <span className="hidden @[540px]/card:block">
+              Total Sales for the last {timeRange === "30d" ? "30 days" : "7 days"}
+            </span>
+            <span className="@[540px]/card:hidden">
+              Last {timeRange === "30d" ? "30 days" : "7 days"}
+            </span>
           </CardDescription>
           <CardAction>
             <ToggleGroup
