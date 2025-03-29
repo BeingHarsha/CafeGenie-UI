@@ -1,0 +1,117 @@
+"use client";
+
+import { AppSidebar } from "@/components/app-sidebar";
+import { SiteHeader } from "@/components/site-header";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import React, { useState } from "react";
+
+const orders = [
+    { orderNumber: "ORD-12345", customerName: "John Doe", phoneNumber: "123-456-7890", pizzas: ["Margherita"], totalPrice: "$10", status: "preparing", date: "2025-03-19" },
+    { orderNumber: "ORD-12346", customerName: "Jane Smith", phoneNumber: "987-654-3210", pizzas: ["Pepperoni", "Veggie"], totalPrice: "$22", status: "ready", date: "2025-03-19" },
+    { orderNumber: "ORD-12347", customerName: "Alice Johnson", phoneNumber: "555-123-9876", pizzas: ["BBQ Chicken"], totalPrice: "$13", status: "cancelled", date: "2025-03-18" },
+    { orderNumber: "ORD-12348", customerName: "Bob Brown", phoneNumber: "555-789-6543", pizzas: ["Margherita", "BBQ Chicken"], totalPrice: "$23", status: "preparing", date: "2025-03-17" },
+];
+
+export default function OrdersPage() {
+    const [filteredOrders, setFilteredOrders] = useState(orders);
+
+    const filterOrders = () => {
+        const statusFilter = (document.getElementById("statusFilter") as HTMLSelectElement).value;
+        const startDate = (document.getElementById("startDate") as HTMLInputElement).value;
+        const endDate = (document.getElementById("endDate") as HTMLInputElement).value;
+
+        const filtered = orders.filter(order => {
+            const isStatusMatch = (statusFilter === "all" || order.status === statusFilter);
+            const isDateMatch = (!startDate || !endDate || (order.date >= startDate && order.date <= endDate));
+            return isStatusMatch && isDateMatch;
+        });
+
+        setFilteredOrders(filtered);
+    };
+
+    const updateStatus = (selectElement: HTMLSelectElement, orderNumber: string) => {
+        const newStatus = selectElement.value;
+        const order = orders.find(order => order.orderNumber === orderNumber);
+        if (order) {
+            order.status = newStatus;
+            alert(`Order ${orderNumber} status updated to ${newStatus}`);
+        }
+    };
+
+    const deleteOrder = (orderNumber: string) => {
+        const orderIndex = orders.findIndex(order => order.orderNumber === orderNumber);
+        if (orderIndex !== -1) {
+            orders.splice(orderIndex, 1);
+            alert(`Order ${orderNumber} has been deleted`);
+            filterOrders(); // Re-render orders after deletion
+        }
+    };
+
+    return (
+        <SidebarProvider
+            style={
+                {
+                    "--sidebar-width": "calc(var(--spacing) * 72)",
+                    "--header-height": "calc(var(--spacing) * 12)",
+                } as React.CSSProperties
+            }
+        >
+            <AppSidebar variant="inset" />
+            <SidebarInset>
+                <SiteHeader />
+                <div className="flex flex-1 flex-col">
+                    <div className="container mx-auto p-4">
+                        <h1 className="text-center text-2xl font-semibold mb-4">Orders List</h1>
+                        <div className="filter flex justify-center gap-4 mb-4">
+                            <label htmlFor="statusFilter">Filter by Status:</label>
+                            <select id="statusFilter" className="status-select p-2 border rounded">
+                                <option value="all">All</option>
+                                <option value="preparing">Preparing</option>
+                                <option value="ready">Ready</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                            <label htmlFor="dateRange">Filter by Date Range:</label>
+                            <input type="date" id="startDate" className="status-select p-2 border rounded" />
+                            <input type="date" id="endDate" className="status-select p-2 border rounded" />
+                            <button onClick={filterOrders} className="bg-blue-500 text-white p-2 rounded">Apply Filter</button>
+                        </div>
+                        <table className="orders-table w-full border-collapse">
+                            <thead>
+                            <tr>
+                                <th className="p-2 border">Order Number</th>
+                                <th className="p-2 border">Customer Name</th>
+                                <th className="p-2 border">Phone Number</th>
+                                <th className="p-2 border">Pizza(s)</th>
+                                <th className="p-2 border">Total Price</th>
+                                <th className="p-2 border">Status</th>
+                                <th className="p-2 border">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {filteredOrders.map(order => (
+                                <tr key={order.orderNumber}>
+                                    <td className="p-2 border">{order.orderNumber}</td>
+                                    <td className="p-2 border">{order.customerName}</td>
+                                    <td className="p-2 border">{order.phoneNumber}</td>
+                                    <td className="p-2 border">{order.pizzas.join(", ")}</td>
+                                    <td className="p-2 border">{order.totalPrice}</td>
+                                    <td className="p-2 border">
+                                        <select className="status-select p-2 border rounded" onChange={(e) => updateStatus(e.target, order.orderNumber)}>
+                                            <option value="preparing" selected={order.status === "preparing"}>Preparing</option>
+                                            <option value="ready" selected={order.status === "ready"}>Ready</option>
+                                            <option value="cancelled" selected={order.status === "cancelled"}>Cancelled</option>
+                                        </select>
+                                    </td>
+                                    <td className="p-2 border">
+                                        <button onClick={() => deleteOrder(order.orderNumber)} className="bg-red-500 text-white p-2 rounded">Delete</button>
+                                    </td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </SidebarInset>
+        </SidebarProvider>
+    );
+}

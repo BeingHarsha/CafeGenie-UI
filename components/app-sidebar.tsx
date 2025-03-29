@@ -51,7 +51,7 @@ const data = {
     },
     {
       title: "Orders",
-      url: "#",
+      url: "/orders",
       icon: IconFolder,
     },
   ],
