@@ -57,19 +57,19 @@ export default function SalesPage() {
             <AppSidebar variant="inset" />
             <SidebarInset>
                 <SiteHeader />
-                <div className="flex flex-1 flex-col">
-                    <div className="container mx-auto p-4">
-                        <h1 className="text-center text-2xl font-semibold mb-4">Sales Dashboard</h1>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            <div className="chart-container">
+                <div className="flex flex-1 flex-col items-center justify-center">
+                    <div className="container mx-auto p-4 flex flex-col items-center">
+                        <h1 className="text-center text-2xl font-semibold mb-6">Sales Dashboard</h1>
+                        <div className="flex flex-col items-center gap-6 w-full max-w-4xl">
+                            <div className="chart-container w-full max-w-md">
                                 <h2 className="text-center text-xl font-semibold mb-2">Pizza Sales</h2>
                                 <Pie data={pizzaData} />
                             </div>
-                            <div className="chart-container">
+                            <div className="chart-container w-full max-w-md">
                                 <h2 className="text-center text-xl font-semibold mb-2">Pizza Size Sales</h2>
                                 <Pie data={sizeData} />
                             </div>
-                            <div className="chart-container md:col-span-2 lg:col-span-1">
+                            <div className="chart-container w-full max-w-2xl">
                                 <h2 className="text-center text-xl font-semibold mb-2">Sales Over Time</h2>
                                 <Line data={salesData} />
                             </div>
